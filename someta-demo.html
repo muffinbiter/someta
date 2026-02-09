@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOMETA - 당신만의 특별한 인연</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+            background: #FFF5E6;
+            color: #2D2D2D;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            background: #FFF5E6;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            padding: 20px;
+            min-height: 100vh;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA057 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA057 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA057 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2D2D2D;
+            border: 1px solid #E0E0E0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin: 20px 0;
+        }
+
+        /* Splash Screen */
+        .splash {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            min-height: 100vh;
+            padding: 60px 20px 40px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA057 100%);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 8px 30px rgba(255, 107, 157, 0.3);
+        }
+
+        .app-title {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-top: 24px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #666;
+            margin-top: 12px;
+        }
+
+        .features {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: #FFE8F0;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin: 0 auto 10px;
+        }
+
+        .feature-text {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Survey Screen */
+        .survey-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #E0E0E0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B9D 0%, #FFA057 100%);
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            text-align: center;
+        }
+
+        .question-icon {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+
+        .question-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 32px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            padding: 20px;
+            background: white;
+            border: 2px solid #F0F0F0;
+            border-radius: 16px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            border-color: #FF6B9D;
+            background: #FFF8FB;
+        }
+
+        /* Character Cards */
+        .character-grid {
+            position: relative;
+            height: 650px;
+            margin: 20px 0;
+        }
+
+        .character-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .character-card.hidden {
+            display: none;
+        }
+
+        .character-card.current {
+            transform: scale(1);
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .character-card.next {
+            transform: scale(0.95) translateY(10px);
+            opacity: 0.8;
+            z-index: 9;
+        }
+
+        .character-card.swipe-left {
+            transform: translateX(-150%) rotate(-30deg);
+            opacity: 0;
+        }
+
+        .character-card.swipe-right {
+            transform: translateX(150%) rotate(30deg);
+            opacity: 0;
+        }
+
+        .character-image {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #FFE8F0 0%, #FFF5E6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .character-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .character-info {
+            padding: 20px;
+        }
+
+        .character-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .character-job {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .character-bio {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .character-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            background: #FFE8F0;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #FF6B9D;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .action-btn.dislike {
+            background: white;
+            border: 3px solid #FFB3C6;
+            color: #FF6B9D;
+        }
+
+        .action-btn.like {
+            background: white;
+            border: 3px solid #B3E5C6;
+            color: #4CAF50;
+        }
+
+        .action-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Chat Screen */
+        .chat-header {
+            background: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #F0F0F0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #FFE8F0;
+        }
+
+        .chat-info {
+            flex: 1;
+        }
+
+        .chat-name {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .chat-status {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .chat-stats {
+            display: flex;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 10px;
+        }
+
+        .chat-messages {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: calc(100vh - 200px);
+        }
+
+        .message {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.ai .message-bubble {
+            background: #F5F5F5;
+            color: #2D2D2D;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA057 100%);
+            color: white;
+        }
+
+        .chat-input {
+            background: white;
+            padding: 16px 20px;
+            border-top: 1px solid #F0F0F0;
+            display: flex;
+            gap: 12px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #E0E0E0;
+            border-radius: 24px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .send-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA057 100%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Home Screen */
+        .home-header {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .level-badge {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: #F5F5F5;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA057 100%);
+            color: white;
+        }
+
+        .level-bar {
+            height: 8px;
+            background: #E0E0E0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .level-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B9D 0%, #FFA057 100%);
+            width: 0%;
+        }
+
+        .match-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 20px 0 8px;
+        }
+
+        .match-subtitle {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .character-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .character-item {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .character-item:active {
+            transform: scale(0.98);
+        }
+
+        .character-item-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #FFE8F0;
+            flex-shrink: 0;
+        }
+
+        .character-item-info {
+            flex: 1;
+        }
+
+        .character-item-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .character-item-bio {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .character-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+        }
+
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 24px;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #FFE8F0;
+            border-top: 4px solid #FF6B9D;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .loading-subtext {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .page-counter {
+            text-align: center;
+            margin-top: 20px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .onboarding {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .onboarding-icon {
+            font-size: 100px;
+            margin: 40px 0;
+        }
+
+        .onboarding-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .onboarding-desc {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #E0E0E0;
+        }
+
+        .dot.active {
+            background: #FF6B9D;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .additional-input {
+            margin: 20px 0;
+        }
+
+        .additional-input textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 1px solid #E0E0E0;
+            border-radius: 16px;
+            font-size: 14px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .skip-link {
+            text-align: center;
+            margin-top: 16px;
+            color: #999;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .analysis-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .analysis-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .analysis-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .analysis-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .analysis-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .achievement-item {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .achievement-item.unlocked {
+            border: 2px solid #FFE8F0;
+        }
+
+        .achievement-item.locked {
+            border: 2px solid #F0F0F0;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            animation: slideUp 0.3s ease;
+        }
+
+        .typing-bubble {
+            background: #F5F5F5;
+            padding: 16px 20px;
+            border-radius: 20px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #999;
+            animation: typingDot 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingDot {
+            0%, 60%, 100% {
+                opacity: 0.3;
+                transform: translateY(0);
+            }
+            30% {
+                opacity: 1;
+                transform: translateY(-4px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Splash Screen -->
+        <div id="splash" class="screen active">
+            <div class="splash">
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <div class="logo">❤️</div>
+                    <h1 class="app-title">SOMETA</h1>
+                    <p class="subtitle">당신만의 특별한 인연</p>
+                </div>
+                <div>
+                    <div class="features">
+                        <div class="feature">
+                            <div class="feature-icon">💬</div>
+                            <div class="feature-text">AI 대화</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">⭐</div>
+                            <div class="feature-text">매칭</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">📊</div>
+                            <div class="feature-text">분석</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="showScreen('onboarding')" style="margin-top: 40px;">시작하기</button>
+                    <p style="color: #999; font-size: 12px; margin-top: 16px;">AI가 당신의 취향을 분석합니다</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onboarding -->
+        <div id="onboarding" class="screen">
+            <div class="onboarding">
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <div class="onboarding-icon">✨</div>
+                    <h2 class="onboarding-title">당신의 취향을 분석해요</h2>
+                    <p class="onboarding-desc">간단한 질문으로<br>AI가 당신에게 맞는<br>이상형을 찾아드려요</p>
+                </div>
+                <div>
+                    <div class="dots">
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="startSurvey()">질문 시작하기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Survey Questions -->
+        <div id="survey" class="screen">
+            <div class="survey-header">
+                <button class="back-btn" onclick="prevQuestion()">←</button>
+                <h2 style="flex: 1;">이전 질문</h2>
+            </div>
+            <div class="progress-container">
+                <span id="questionNum">질문 1 / 9</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 11%"></div>
+                </div>
+                <span id="progressPercent">11%</span>
+            </div>
+            <div class="card question-card" id="questionCard">
+                <!-- Questions will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="screen">
+            <div class="loading-screen">
+                <div class="spinner"></div>
+                <div class="loading-text">당신의 이상형을 찾는 중...</div>
+                <div class="loading-subtext">AI가 5명의 특별한 사람을 생성하고 있어요</div>
+            </div>
+        </div>
+
+        <!-- Additional Question -->
+        <div id="additional" class="screen">
+            <div class="survey-header">
+                <button class="back-btn" onclick="currentQuestion = questions.length - 1; showScreen('survey')">←</button>
+                <h2>마지막으로...</h2>
+            </div>
+            <div class="card">
+                <div class="question-icon">✍️</div>
+                <h3 class="question-title">더 구체적인 취향이 있다면 자유롭게 적어주세요!</h3>
+                <p style="color: #999; font-size: 14px; margin-bottom: 20px;">
+                    (예: 안경 쓴 사람, 통통한 체형, 장발, 문신 등)
+                </p>
+                <div class="additional-input">
+                    <textarea placeholder="안경 쓴 사람 좋아함..."></textarea>
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="currentQuestion = questions.length - 1; showScreen('survey')">이전</button>
+                    <button class="btn btn-primary" style="flex: 2;" onclick="showScreen('loading'); setTimeout(() => showCharacters(), 2000)">완료</button>
+                </div>
+                <div class="skip-link" onclick="showScreen('loading'); setTimeout(() => showCharacters(), 2000)">건너뛰기 →</div>
+            </div>
+        </div>
+
+        <!-- Match Result -->
+        <div id="matchResult" class="screen">
+            <div class="survey-header">
+                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <h2>연애 리포트</h2>
+            </div>
+            <div style="padding: 20px 0;">
+                <h3 style="font-size: 24px; margin-bottom: 20px; text-align: center;">나의 연애 스타일 분석</h3>
+                <p style="text-align: center; color: #999; font-size: 14px; margin-bottom: 30px;">당신의 대화 패턴을 분석한 결과입니다</p>
+                <div class="analysis-cards">
+                    <div class="analysis-card">
+                        <div class="analysis-icon">💬</div>
+                        <div class="analysis-title">대화 스타일</div>
+                        <div class="analysis-content">당신은 신중한 대화 스타일을 가지고 있어요. 신중하게 대화를 이어가는 스타일이에요.</div>
+                    </div>
+                    <div class="analysis-card">
+                        <div class="analysis-icon">💖</div>
+                        <div class="analysis-title">감정 표현</div>
+                        <div class="analysis-content">당신의 감정 표현은 차분하고 조심스러움 특징을 보여요. 차분하고 안정적인 매력이 있습니다.</div>
+                    </div>
+                    <div class="analysis-card">
+                        <div class="analysis-icon">💡</div>
+                        <div class="analysis-title">연애 코칭</div>
+                        <div class="analysis-content">
+                            <strong>강점:</strong> 신중하고 진지한 태도<br>
+                            <strong>개선 포인트:</strong> 좀 더 적극적으로 대화해보세요<br>
+                            <strong>추천 상대:</strong> 차분하고 안정적인 성격과 잘 맞을 것 같아요!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Characters -->
+        <div id="characters" class="screen">
+            <div class="character-grid" id="characterGrid">
+                <!-- Characters will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Home -->
+        <div id="home" class="screen">
+            <div class="home-header">
+                <div class="level-info">
+                    <div class="level-badge">레벨 1</div>
+                    <div class="tabs" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px;">
+                        <button class="tab-btn active" id="chatTab" onclick="showTab('chat-list')">💬</button>
+                        <button class="tab-btn" id="profileTab" onclick="showTab('profile')">👤</button>
+                        <button class="tab-btn" id="achievementTab" onclick="showTab('achievement')">🏆</button>
+                        <button class="tab-btn" id="reportTab" onclick="showTab('report')">📊</button>
+                    </div>
+                </div>
+                <div style="font-size: 12px; color: #999;">EXP 0 / 100</div>
+                <div class="level-bar">
+                    <div class="level-progress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- 대화 탭 (기본) -->
+            <div id="chatListContent" class="tab-content active">
+                <h2 class="match-title">매칭 완료! 🎉</h2>
+                <p class="match-subtitle">5명과 매칭되었어요. 대화를 시작해보세요!</p>
+
+                <div class="character-list" id="characterList">
+                    <!-- Character list items will be inserted here -->
+                </div>
+            </div>
+
+            <!-- 프로필 탭 -->
+            <div id="profileContent" class="tab-content">
+                <div style="text-align: center; padding: 40px 20px;">
+                    <img id="userProfileImage" src="./images/user-male.jpg" alt="프로필" 
+                         style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"
+                         onerror="this.style.display='flex'; this.innerHTML='👤'">
+                    <h3 style="font-size: 24px; margin-bottom: 8px;" id="userName">선호</h3>
+                    <p style="color: #999; font-size: 14px; margin-bottom: 30px;">레벨 1 · 업적 <span id="achievementCount">1</span>개 달성</p>
+                    
+                    <div style="background: white; border-radius: 16px; padding: 24px; margin-top: 20px;">
+                        <h4 style="font-size: 18px; margin-bottom: 20px; text-align: left;">📊 통계</h4>
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <div style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #F0F0F0;">
+                                <span style="color: #666;">💬 총 메시지</span>
+                                <span style="font-weight: 700;" id="totalMessages">2</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #F0F0F0;">
+                                <span style="color: #666;">💖 긍정 메시지</span>
+                                <span style="font-weight: 700;" id="positiveMessages">0%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #666;">🤝 공감 표현</span>
+                                <span style="font-weight: 700;" id="empathyMessages">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 업적 탭 -->
+            <div id="achievementContent" class="tab-content">
+                <h2 style="font-size: 24px; margin: 20px 0; text-align: center;">🏆 업적</h2>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div class="achievement-item unlocked">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 40px;">✅</div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 700; font-size: 16px;">첫 만남</div>
+                                <div style="font-size: 13px; color: #666;">첫 대화 시작</div>
+                            </div>
+                            <div style="font-size: 24px;">💬</div>
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-item locked">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 40px; opacity: 0.3;">🔒</div>
+                            <div style="flex: 1; opacity: 0.5;">
+                                <div style="font-weight: 700; font-size: 16px;">설렘 시작</div>
+                                <div style="font-size: 13px; color: #666;">호감도 30 달성</div>
+                            </div>
+                            <div style="font-size: 24px; opacity: 0.3;">💕</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-item locked">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 40px; opacity: 0.3;">🔒</div>
+                            <div style="flex: 1; opacity: 0.5;">
+                                <div style="font-weight: 700; font-size: 16px;">호감쟁이</div>
+                                <div style="font-size: 13px; color: #666;">호감도 50 달성</div>
+                            </div>
+                            <div style="font-size: 24px; opacity: 0.3;">❤️</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-item locked">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 40px; opacity: 0.3;">🔒</div>
+                            <div style="flex: 1; opacity: 0.5;">
+                                <div style="font-weight: 700; font-size: 16px;">연애 고수</div>
+                                <div style="font-size: 13px; color: #666;">호감도 80 달성</div>
+                            </div>
+                            <div style="font-size: 24px; opacity: 0.3;">💖</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-item locked">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 40px; opacity: 0.3;">🔒</div>
+                            <div style="flex: 1; opacity: 0.5;">
+                                <div style="font-weight: 700; font-size: 16px;">멀티플레이어</div>
+                                <div style="font-size: 13px; color: #666;">3명과 동시 대화</div>
+                            </div>
+                            <div style="font-size: 24px; opacity: 0.3;">🎭</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-item locked">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 40px; opacity: 0.3;">🔒</div>
+                            <div style="flex: 1; opacity: 0.5;">
+                                <div style="font-weight: 700; font-size: 16px;">수다쟁이</div>
+                                <div style="font-size: 13px; color: #666;">10개 메시지 전송</div>
+                            </div>
+                            <div style="font-size: 24px; opacity: 0.3;">📱</div>
+                        </div>
+                    </div>
+
+                    <div class="achievement-item locked">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 40px; opacity: 0.3;">🔒</div>
+                            <div style="flex: 1; opacity: 0.5;">
+                                <div style="font-weight: 700; font-size: 16px;">대화의 달인</div>
+                                <div style="font-size: 13px; color: #666;">50개 메시지 전송</div>
+                            </div>
+                            <div style="font-size: 24px; opacity: 0.3;">💬</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 리포트 탭 -->
+            <div id="reportContent" class="tab-content">
+                <h3 style="font-size: 24px; margin: 20px 0; text-align: center;">나의 연애 스타일 분석</h3>
+                <p style="text-align: center; color: #999; font-size: 14px; margin-bottom: 30px;">당신의 대화 패턴을 분석한 결과입니다</p>
+                <div class="analysis-cards">
+                    <div class="analysis-card">
+                        <div class="analysis-icon">💬</div>
+                        <div class="analysis-title">대화 스타일</div>
+                        <div class="analysis-content">당신은 신중한 대화 스타일을 가지고 있어요. 신중하게 대화를 이어가는 스타일이에요.</div>
+                    </div>
+                    <div class="analysis-card">
+                        <div class="analysis-icon">💖</div>
+                        <div class="analysis-title">감정 표현</div>
+                        <div class="analysis-content">당신의 감정 표현은 차분하고 조심스러움 특징을 보여요. 차분하고 안정적인 매력이 있습니다.</div>
+                    </div>
+                    <div class="analysis-card">
+                        <div class="analysis-icon">💡</div>
+                        <div class="analysis-title">연애 코칭</div>
+                        <div class="analysis-content">
+                            <strong>강점:</strong> 신중하고 진지한 태도<br>
+                            <strong>개선 포인트:</strong> 좀 더 적극적으로 대화해보세요<br>
+                            <strong>추천 상대:</strong> 차분하고 안정적인 성격과 잘 맞을 것 같아요!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat -->
+        <div id="chat" class="screen">
+            <div class="chat-header">
+                <button class="back-btn" onclick="showScreen('home')">←</button>
+                <img id="chatAvatar" class="chat-avatar" src="./images/male1.jpg" alt="">
+                <div class="chat-info">
+                    <div class="chat-name" id="chatName">민준</div>
+                    <div class="chat-status">온라인</div>
+                </div>
+                <div class="chat-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="affection">17</div>
+                        <div class="stat-label">호감</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="trust">13</div>
+                        <div class="stat-label">신뢰</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="tension">45</div>
+                        <div class="stat-label">긴장</div>
+                    </div>
+                </div>
+                <div style="font-size: 24px;">😊</div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be inserted here -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="메시지를 입력하세요..." onkeypress="if(event.key === 'Enter') sendMessage()">
+                <button class="send-btn" onclick="sendMessage()">전송</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userData = {
+            gender: null,
+            preferredGender: null,
+            age: null,
+            agePreference: null,
+            personality: null,
+            appearance: null,
+            style: null,
+            talkingStyle: null,
+            relationshipType: null
+        };
+
+        let currentQuestion = 0;
+        let currentCharacterIndex = 0;
+        let charactersList = [];
+        let matchedCharacters = []; // 매칭된 캐릭터만 저장
+        let currentChatIndex = 0; // 현재 채팅 중인 캐릭터 인덱스
+
+        // Questions
+        const questions = [
+            {
+                icon: "👤",
+                title: "당신의 성별은?",
+                field: "gender",
+                options: ["남성", "여성"]
+            },
+            {
+                icon: "💫",
+                title: "어떤 성별이 좋아?",
+                field: "preferredGender",
+                options: ["남성", "여성", "상관없음"]
+            },
+            {
+                icon: "🎂",
+                title: "나이대는?",
+                field: "age",
+                options: ["20대 초반", "20대 중반", "20대 후반", "30대 초반", "30대 중반", "상관없음"]
+            },
+            {
+                icon: "✨",
+                title: "연상/동갑/연하 중엔?",
+                field: "agePreference",
+                options: ["연상", "동갑", "연하", "상관없음"]
+            },
+            {
+                icon: "✨",
+                title: "어떤 성격?",
+                field: "personality",
+                options: ["외향적", "내향적", "반반"]
+            },
+            {
+                icon: "😊",
+                title: "어떤 인상이 좋아?",
+                field: "appearance",
+                options: ["고양이상", "강아지상", "여우상", "곰상"]
+            },
+            {
+                icon: "👔",
+                title: "스타일은?",
+                field: "style",
+                options: ["캐주얼", "댄디", "스트릿", "미니멀"]
+            },
+            {
+                icon: "💬",
+                title: "대화 템포는?",
+                field: "talkingStyle",
+                options: ["빠른 티키타카", "차분하게", "상황 따라"]
+            },
+            {
+                icon: "💕",
+                title: "관계 성향은?",
+                field: "relationshipType",
+                options: ["설렘 위주", "안정 위주", "성장형", "친구같이"]
+            }
+        ];
+
+        // Characters data
+        const maleCharacters = [
+            {
+                name: "민준",
+                age: 27,
+                job: "개발자",
+                bio: "커피 좋아하고 산책 자주 다녀요 🌿",
+                personality: ["다정함", "장난기", "열정적"],
+                image: "./images/male1.jpg",
+                badge: "정석 취향",
+                affection: 17,
+                trust: 13,
+                tension: 45
+            },
+            {
+                name: "서준",
+                age: 28,
+                job: "바리스타",
+                bio: "운동이랑 우리 좋아합니다 🏃",
+                personality: ["차분함", "사려깊음", "세심함"],
+                image: "./images/male2.jpg",
+                badge: "한 모스 반대",
+                affection: 18,
+                trust: 8,
+                tension: 45
+            },
+            {
+                name: "지훈",
+                age: 29,
+                job: "사진가",
+                bio: "영화 보는 거 진짜 좋아해요 🎬",
+                personality: ["재치있음", "솔직함", "활달함"],
+                image: "./images/male3.jpg",
+                badge: "직읍으로 본 정말",
+                affection: 18,
+                trust: 10,
+                tension: 55
+            },
+            {
+                name: "준서",
+                age: 30,
+                job: "디자이너",
+                bio: "여행 다니면서 사진 찍는 거 좋아요 ✈️",
+                personality: ["신중함", "배려심", "안정적"],
+                image: "./images/male4.jpg",
+                badge: "와도 취향, 성격 반대",
+                affection: 18,
+                trust: 10,
+                tension: 55
+            },
+            {
+                name: "도윤",
+                age: 31,
+                job: "작가",
+                bio: "음악 듣고 책 읽는 게 취미예요 📚",
+                personality: ["침착함", "호기심", "우머러스"],
+                image: "./images/male5.jpg",
+                badge: "의외의 매력",
+                affection: 17,
+                trust: 13,
+                tension: 45
+            }
+        ];
+
+        const femaleCharacters = [
+            {
+                name: "수진",
+                age: 25,
+                job: "디자이너",
+                bio: "그림 그리고 음악 듣는 걸 좋아해요 🎨",
+                personality: ["따뜻함", "섬세함", "창의적"],
+                image: "./images/female1.jpg",
+                badge: "예술적 감성",
+                affection: 15,
+                trust: 12,
+                tension: 40
+            },
+            {
+                name: "지은",
+                age: 26,
+                job: "마케터",
+                bio: "카페 투어하고 맛집 찾아다녀요 ☕",
+                personality: ["활발함", "긍정적", "사교적"],
+                image: "./images/female2.jpg",
+                badge: "에너지 넘치는",
+                affection: 20,
+                trust: 10,
+                tension: 50
+            },
+            {
+                name: "예린",
+                age: 27,
+                job: "작가",
+                bio: "책 읽고 글 쓰는 걸 좋아해요 📖",
+                personality: ["지적", "차분함", "배려심"],
+                image: "./images/female3.jpg",
+                badge: "지적 매력",
+                affection: 16,
+                trust: 15,
+                tension: 35
+            },
+            {
+                name: "하은",
+                age: 28,
+                job: "요가 강사",
+                bio: "운동하고 건강한 음식 먹는 거 좋아요 🧘‍♀️",
+                personality: ["건강미", "밝음", "활동적"],
+                image: "./images/female4.jpg",
+                badge: "건강한 라이프",
+                affection: 19,
+                trust: 11,
+                tension: 45
+            },
+            {
+                name: "서연",
+                age: 29,
+                job: "사진가",
+                bio: "여행하고 사진 찍는 게 취미예요 📷",
+                personality: ["자유로움", "모험적", "감성적"],
+                image: "./images/female5.jpg",
+                badge: "자유로운 영혼",
+                affection: 17,
+                trust: 14,
+                tension: 42
+            }
+        ];
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function startSurvey() {
+            currentQuestion = 0;
+            showQuestion();
+            showScreen('survey');
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            const total = questions.length;
+            const percent = Math.round(((currentQuestion + 1) / total) * 100);
+            
+            document.getElementById('questionNum').textContent = `질문 ${currentQuestion + 1} / ${total}`;
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressPercent').textContent = percent + '%';
+            
+            let optionsHtml = '';
+            q.options.forEach(option => {
+                optionsHtml += `<button class="option-btn" onclick="selectOption('${q.field}', '${option}')">${option}</button>`;
+            });
+            
+            document.getElementById('questionCard').innerHTML = `
+                <div class="question-icon">${q.icon}</div>
+                <h3 class="question-title">${q.title}</h3>
+                <div class="options">${optionsHtml}</div>
+            `;
+        }
+
+        function selectOption(field, value) {
+            userData[field] = value;
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                // Survey complete - go directly to additional question
+                showScreen('additional');
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            } else {
+                showScreen('onboarding');
+            }
+        }
+
+        function showCharacters() {
+            charactersList = userData.gender === '남성' ? femaleCharacters : maleCharacters;
+            currentCharacterIndex = 0;
+            matchedCharacters = []; // 매칭 목록 초기화
+            
+            renderCharacterCards();
+            showScreen('characters');
+        }
+
+        function renderCharacterCards() {
+            let html = '';
+            charactersList.forEach((char, index) => {
+                let cardClass = 'character-card';
+                if (index === currentCharacterIndex) {
+                    cardClass += ' current';
+                } else if (index === currentCharacterIndex + 1) {
+                    cardClass += ' next';
+                } else if (index < currentCharacterIndex) {
+                    cardClass += ' hidden';
+                }
+                
+                html += `
+                    <div class="${cardClass}" id="card-${index}">
+                        <img src="${char.image}" alt="${char.name}" class="character-image" onerror="this.style.display='flex'; this.innerHTML='${char.name} 이미지'">
+                        <div class="character-badge">${char.badge}</div>
+                        <div class="character-info">
+                            <h3 class="character-name">${char.name}, ${char.age}</h3>
+                            <p class="character-job">${char.job}</p>
+                            <p class="character-bio">${char.bio}</p>
+                            <div class="character-tags">
+                                ${char.personality.map(p => `<span class="tag">${p}</span>`).join('')}
+                            </div>
+                            <div class="action-buttons">
+                                <button class="action-btn dislike" onclick="swipeLeft()">✕</button>
+                                <button class="action-btn like" onclick="swipeRight()">♥</button>
+                            </div>
+                        </div>
+                        <div class="page-counter">${index + 1} / ${charactersList.length}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('characterGrid').innerHTML = html;
+        }
+
+        function swipeLeft() {
+            const currentCard = document.getElementById(`card-${currentCharacterIndex}`);
+            currentCard.classList.add('swipe-left');
+            
+            setTimeout(() => {
+                moveToNextCharacter();
+            }, 300);
+        }
+
+        function swipeRight() {
+            // 매칭 성공 - 현재 캐릭터를 매칭 목록에 추가
+            matchedCharacters.push(charactersList[currentCharacterIndex]);
+            
+            const currentCard = document.getElementById(`card-${currentCharacterIndex}`);
+            currentCard.classList.add('swipe-right');
+            
+            setTimeout(() => {
+                moveToNextCharacter();
+            }, 300);
+        }
+
+        function moveToNextCharacter() {
+            currentCharacterIndex++;
+            
+            if (currentCharacterIndex >= charactersList.length) {
+                // All characters viewed - go to home
+                showHome();
+            } else {
+                // Update cards visibility
+                document.querySelectorAll('.character-card').forEach((card, index) => {
+                    card.classList.remove('current', 'next', 'swipe-left', 'swipe-right');
+                    
+                    if (index === currentCharacterIndex) {
+                        card.classList.add('current');
+                    } else if (index === currentCharacterIndex + 1) {
+                        card.classList.add('next');
+                    } else if (index < currentCharacterIndex) {
+                        card.classList.add('hidden');
+                    }
+                });
+            }
+        }
+
+        function showMatchResult() {
+            showScreen('matchResult');
+        }
+
+        function showHome() {
+            // 유저 프로필 이미지 및 이름 설정
+            const userImage = userData.gender === '남성' ? './images/user-male.jpg' : './images/user-female.jpg';
+            const userName = userData.gender === '남성' ? '선호' : '윤정';
+            document.getElementById('userProfileImage').src = userImage;
+            document.getElementById('userName').textContent = userName;
+            
+            // 매칭된 캐릭터만 표시
+            let html = '';
+            
+            if (matchedCharacters.length === 0) {
+                html = `
+                    <div style="text-align: center; padding: 60px 20px; color: #999;">
+                        <div style="font-size: 60px; margin-bottom: 20px;">😢</div>
+                        <p>아직 매칭된 상대가 없어요</p>
+                        <p style="font-size: 14px; margin-top: 8px;">다시 시작해서 ♥를 눌러보세요!</p>
+                    </div>
+                `;
+            } else {
+                matchedCharacters.forEach((char, index) => {
+                    html += `
+                        <div class="character-item" onclick="openChat(${index})">
+                            <img src="${char.image}" alt="${char.name}" class="character-item-avatar" onerror="this.style.display='flex'; this.innerHTML='👤'">
+                            <div class="character-item-info">
+                                <div class="character-item-name">${char.name}, ${char.age}</div>
+                                <div class="character-item-bio">${char.job} · ${char.bio}</div>
+                                <div class="character-stats">
+                                    <span>💖 ${char.affection}</span>
+                                    <span>🤝 ${char.trust}</span>
+                                    <span>⚡ ${char.tension}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('characterList').innerHTML = html;
+            
+            // Update match count
+            const matchCount = matchedCharacters.length;
+            document.querySelector('.match-subtitle').textContent = `${matchCount}명과 매칭되었어요. 대화를 시작해보세요!`;
+            
+            // 대화 탭을 기본으로 표시
+            showTab('chat-list');
+            
+            showScreen('home');
+        }
+
+        function openChat(index) {
+            currentChatIndex = index; // 현재 채팅 중인 캐릭터 저장
+            const char = matchedCharacters[index]; // 매칭된 캐릭터에서 가져오기
+            const userImage = userData.gender === '남성' ? './images/user-male.jpg' : './images/user-female.jpg';
+            
+            document.getElementById('chatName').textContent = char.name;
+            document.getElementById('chatAvatar').src = char.image;
+            document.getElementById('affection').textContent = char.affection;
+            document.getElementById('trust').textContent = char.trust;
+            document.getElementById('tension').textContent = char.tension;
+            
+            // 빈 채팅창으로 시작
+            document.getElementById('chatMessages').innerHTML = '';
+            showScreen('chat');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const char = matchedCharacters[currentChatIndex]; // 현재 채팅 중인 캐릭터
+            const userImage = userData.gender === '남성' ? './images/user-male.jpg' : './images/user-female.jpg';
+            
+            // Add user message
+            const chatMessages = document.getElementById('chatMessages');
+            const userMessageHtml = `
+                <div class="message user">
+                    <div class="message-bubble">${message}</div>
+                    <img src="${userImage}" alt="" class="message-avatar" onerror="this.innerHTML='👤'">
+                </div>
+            `;
+            chatMessages.innerHTML += userMessageHtml;
+            
+            input.value = '';
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Show typing indicator
+            const typingHtml = `
+                <div class="typing-indicator" id="typingIndicator">
+                    <img src="${char.image}" alt="" class="message-avatar" onerror="this.innerHTML='👤'">
+                    <div class="typing-bubble">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            chatMessages.innerHTML += typingHtml;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Send demo response after delay
+            setTimeout(() => {
+                // Remove typing indicator
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+                
+                // Show demo message
+                const aiMessageHtml = `
+                    <div class="message ai">
+                        <img src="${char.image}" alt="" class="message-avatar" onerror="this.innerHTML='👤'">
+                        <div class="message-bubble">데모 버전입니다. API 연결이 필요해요.</div>
+                    </div>
+                `;
+                chatMessages.innerHTML += aiMessageHtml;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+
+        function showMatchResult() {
+            showScreen('matchResult');
+        }
+
+        function showHomeTab() {
+            showScreen('home');
+        }
+
+        function showTab(tabName) {
+            // 모든 탭 비활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // 선택한 탭 활성화
+            if (tabName === 'chat-list') {
+                document.getElementById('chatTab').classList.add('active');
+                document.getElementById('chatListContent').classList.add('active');
+            } else if (tabName === 'profile') {
+                document.getElementById('profileTab').classList.add('active');
+                document.getElementById('profileContent').classList.add('active');
+            } else if (tabName === 'achievement') {
+                document.getElementById('achievementTab').classList.add('active');
+                document.getElementById('achievementContent').classList.add('active');
+            } else if (tabName === 'report') {
+                document.getElementById('reportTab').classList.add('active');
+                document.getElementById('reportContent').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
